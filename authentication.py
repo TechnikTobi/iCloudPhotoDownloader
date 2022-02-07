@@ -81,8 +81,12 @@ def _twoStepAuthentication(apiObject):
 """
 Does all of the authentication work and returns an API object if successful
 """
-def getAPIobject():
-    return _authenticate(
-        _readCredentials()[0],
-        _readCredentials()[1]
-    )
+def getAPIobject(manualCredentials = False):
+    if manualCredentials:
+        email = click.prompt("Email?")
+        password = click.prompt("Password?", hide_input = True)
+    else:
+        email = _readCredentials()[0]
+        password = _readCredentials()[1]
+
+    return _authenticate(email, password)
