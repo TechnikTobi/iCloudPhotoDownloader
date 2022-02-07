@@ -78,15 +78,31 @@ def _writeFailedCSV():
 
 
 """
-Simply downloads a photo and stores it on disk
+Simply downloads a photo and stores it on disk with a new name
 """
 def _simpleDownload(photo):
+
+    assetDate = photo.asset_date
+
+    # For adjusting the timezone from UTC to local
+    # Not sure if this is a good idea though...
+    # assetDate = assetDate.replace(tzinfo=timezone.utc).astimezone(tz=None)
+
+    newFileName = str(assetDate.year)
+    newFileName = newFileName + "-" + str(assetDate.month)
+    newFileName = newFileName + "-" + str(assetDate.day)
+    newFileName = newFileName + " " + str(assetDate.hour)
+    newFileName = newFileName + "-" + str(assetDate.minute)
+    newFileName = newFileName + "-" + str(assetDate.second)
+    newFileName = newFileName + "-" + str(assetDate.microsecond)
+    newFileName = newFileName + "." + photo.filename.rsplit(".", 1)[-1]
+
     success = False
-    # Try to download the image and store it under a constructed file name, 
-    # made out of the object's identifier and its actual filename
+
+    # Try to download the image and store it under the newly created file name
     try:
         photoDownload = photo.download()
-        with open(str(photo.id) + photo.filename, "wb") as photoFile:
+        with open(newFileName, "wb") as photoFile:
             photoFile.write(photoDownload.raw.read())
             success = True
     except Exception as e:
@@ -122,8 +138,6 @@ def downloadAll(apiObject):
         if str(photo.id) in allImageIDs and photo.id not in downloadedImages:
             print("Trying to download image with name '" + photo.filename + "' (id: " + photo.id + ")")
 
-            print(photo.asset_date)
-
             downloadSuccess = _simpleDownload(photo)
             
             # In case the download was successful, store the ID as 'downloaded'
@@ -132,24 +146,7 @@ def downloadAll(apiObject):
 
                 downloadedImages.append(photo.id)
                 _writeDownloadedCSV()
-
-                _rename(str(photo.id) + photo.filename, photo.asset_date)
                 
-    os.chdir("..")
     _writeDownloadedCSV()
     _writeFailedCSV()
-
-
-
-"""
-Renames a file with the given file name using the date of the asset as received from iCloud
-"""
-def _rename(currentFileName, assetDate):
-    
-    # For adjusting the timezone from UTC to local
-    # Not sure if this is a good idea though...
-    # assetDate = assetDate.replace(tzinfo=timezone.utc).astimezone(tz=None)
-
-    newFileName = str(assetDate.year) + "-" + str(assetDate.month) + "-" + str(assetDate.day) + " " + str(assetDate.hour) + "-" + str(assetDate.minute) + "-" + str(assetDate.second) + "-" + str(assetDate.microsecond) + "." + currentFileName.rsplit(".", 1)[-1]
-
-    os.rename(currentFileName, newFileName)
+    os.chdir("..")
