@@ -1,7 +1,6 @@
-import pyicloud_ipd
 from authentication import getAPIobject
+from download import downloadAll
 
 if __name__ == "__main__":
-    print("hello")
-    
-    apiObject = getAPIobject()
+    apiObject = getAPIobject(False)
+    downloadAll(apiObject)
