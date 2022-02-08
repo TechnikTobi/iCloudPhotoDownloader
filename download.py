@@ -23,11 +23,7 @@ def _readAllCSV(apiObject):
     
 def _createAllCSV(apiObject):
     with open("allImageIDs.csv", "w") as allFile:
-        counter = 0
         for photo in apiObject.photos.all:
-            counter += 1
-            if counter > 5:
-                return
             allFile.write(photo.id + "\n")
 
 
