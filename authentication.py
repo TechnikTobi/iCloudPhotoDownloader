@@ -83,8 +83,8 @@ Does all of the authentication work and returns an API object if successful
 """
 def getAPIobject(manualCredentials = False):
     if manualCredentials:
-        email = click.prompt("Email?")
-        password = click.prompt("Password?", hide_input = True)
+        email = click.prompt("Email")
+        password = click.prompt("Password", hide_input = True)
     else:
         email = _readCredentials()[0]
         password = _readCredentials()[1]
