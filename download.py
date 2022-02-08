@@ -85,12 +85,12 @@ def _simpleDownload(photo):
     # assetDate = assetDate.replace(tzinfo=timezone.utc).astimezone(tz=None)
 
     newFileName = str(assetDate.year)
-    newFileName = newFileName + "-" + str(assetDate.month)
-    newFileName = newFileName + "-" + str(assetDate.day)
-    newFileName = newFileName + " " + str(assetDate.hour)
-    newFileName = newFileName + "-" + str(assetDate.minute)
-    newFileName = newFileName + "-" + str(assetDate.second)
-    newFileName = newFileName + "-" + str(assetDate.microsecond)
+    newFileName = newFileName + "-" + str(assetDate.strftime("%m"))
+    newFileName = newFileName + "-" + str(assetDate.strftime("%d"))
+    newFileName = newFileName + " " + str(assetDate.strftime("%H"))
+    newFileName = newFileName + "-" + str(assetDate.strftime("%M"))
+    newFileName = newFileName + "-" + str(assetDate.strftime("%S"))
+    newFileName = newFileName + "-" + str(assetDate.strftime("%f"))
     newFileName = newFileName + "." + photo.filename.rsplit(".", 1)[-1]
 
     success = False
