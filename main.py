@@ -1,6 +1,8 @@
 from authentication import getAPIobject
 from download import downloadAll
+from helper import getWorkingDirectory
+import os 
 
 if __name__ == "__main__":
-    apiObject = getAPIobject(True)
-    downloadAll(apiObject)
+    os.chdir(getWorkingDirectory())
+    downloadAll(getAPIobject(True))
