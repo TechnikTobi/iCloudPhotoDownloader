@@ -10,7 +10,14 @@ def getWorkingDirectory():
 
     while(not pathExists):
         try:
-            newWorkingPath = click.prompt("Working Directory").replace("'", "").replace('"', '')
+            # Get path, remove ' and "
+            newWorkingPath = click.prompt("Choose Working Directory").replace("'", "").replace('"', '')
+
+            # Remove spaces at the end of the string
+            while(newWorkingPath[-1] == " "):
+                newWorkingPath = newWorkingPath[:-1]
+
+            # Check if the path actually exists
             pathExists = os.path.exists(newWorkingPath)
         except:
             pass
